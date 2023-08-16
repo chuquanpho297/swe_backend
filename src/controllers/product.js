@@ -1,48 +1,156 @@
-const productService = require("../services/product");
+// const productService = require("../services/product");
 
-exports.getAllProducts = async (req, res) => {
+// exports.getAllProducts = async (req, res) => {
+//   try {
+//     const products = await productService.getAllProducts();
+//     console.log("1");
+//     res.json({ data: products, status: "success" });
+//   } catch (err) {
+//     console.log("2");
+//     res.status(500).json({ error: err.message });
+//   }
+// };
+
+// exports.addProduct = async (req, res) => {
+//   try {
+//     const product = await productService.addProduct(req.body);
+//     res.json({ _id: product._id, status: "success" });
+//   } catch (err) {
+//     res.status(500).json({ error: err.message });
+//   }
+// };
+
+// exports.getProductById = async (req, res) => {
+//   try {
+//     const product = await productService.getProductById(req.params.id);
+//     res.json({ data: product, status: "success" });
+//   } catch (err) {
+//     res.status(500).json({ error: err.message });
+//   }
+// };
+
+// exports.updateProduct = async (req, res) => {
+//   try {
+//     const product = await productService.updateProduct(req.params.id, req.body);
+//     res.json({ data: product, status: "success" });
+//   } catch (err) {
+//     res.status(500).json({ error: err.message });
+//   }
+// };
+
+// exports.deleteProduct = async (req, res) => {
+//   try {
+//     const product = await productService.deleteProduct(req.params.id);
+//     res.json({ data: product, status: "success" });
+//   } catch (err) {
+//     res.status(500).json({ error: err.message });
+//   }
+// };
+
+const productService = require("../services/product");
+const path = require('path');
+
+getAllProducts = async (req, res) => {
   try {
     const products = await productService.getAllProducts();
-    console.log("1");
+    // console.log(products);
+    // Cập nhật đường dẫn ảnh của mỗi sản phẩm
+    await products.forEach(product => {
+      product.image = `http://localhost:4001/uploads/${product.image}`;
+    });
     res.json({ data: products, status: "success" });
   } catch (err) {
-    console.log("2");
     res.status(500).json({ error: err.message });
   }
 };
 
-exports.addProduct = async (req, res) => {
+// exports.addProduct = async (req, res) => {
+//     try {
+//         const product = await productService.addProduct(req.body);
+//         res.json({ data: product, status: "success" });
+//     } catch (err) {
+//         res.status(500).json({ error: err.message });
+//     }
+// }
+
+addProduct = async (req, res) => {
   try {
-    const product = await productService.addProduct(req.body);
-    res.json({ _id: product._id, status: "success" });
+    // console.log(req.file);
+    const product = await productService.addProduct(req.body, req.file.filename);
+    console.log("req.body: ", req.body);
+    // console.log(req.file);
+    res.json({ data: product, status: "success" });
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
 };
 
-exports.getProductById = async (req, res) => {
+getProductById = async (req, res) => {
   try {
     const product = await productService.getProductById(req.params.id);
+    product.image = `http://localhost:4001/uploads/${product.image}`;
     res.json({ data: product, status: "success" });
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
 };
 
-exports.updateProduct = async (req, res) => {
+updateProductById = async (req, res) => {
   try {
-    const product = await productService.updateProduct(req.params.id, req.body);
+    const product = await productService.updateProductById(req.params.productId, req.body);
     res.json({ data: product, status: "success" });
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
 };
 
-exports.deleteProduct = async (req, res) => {
+// exports.deleteProduct = async (req, res) => {
+//     try {
+//         const product = await productService.deleteProduct(req.params.id);
+//         res.json({ data: product, status: "success" });
+//     } catch (err) {
+//         res.status(500).json({ error: err.message });
+//     }
+// };
+
+deleteProduct = async (req, res) => {
   try {
+    // console.log(req.params.id);
     const product = await productService.deleteProduct(req.params.id);
     res.json({ data: product, status: "success" });
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
 };
+
+getALlToping = async (req, res) => {
+  try {
+      const topings = await productService.getALlToping();
+      res.json({ data: topings, status: "success" });
+  } catch (err) {
+      res.status(500).json({ error: err.message });
+  }
+};
+
+getAllCategory = async (req, res) => {
+  try {
+      const categories = await productService.getAllCategory();
+      res.json({ data: categories, status: "success" });
+  } catch (err) {
+      res.status(500).json({ error: err.message });
+  }
+};
+
+
+module.exports = {
+  getAllProducts,
+  addProduct,
+  getProductById,
+  updateProductById,
+  deleteProduct,
+  getALlToping,
+  getAllCategory
+};
+
+
+
