@@ -8,11 +8,11 @@ const orderSchema = new mongoose.Schema({
   },
   orderLine: [
     {
-      products: {
+      productId: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "Product",
       },
-      toppingList: [
+      includedTopping: [
         {
           toppingId: {
             type: mongoose.Schema.Types.ObjectId,
@@ -20,11 +20,11 @@ const orderSchema = new mongoose.Schema({
           },
         },
       ],
-      sizeProduct: {
+      size: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "Size",
       },
-      quantityProduct: {
+      quantity: {
         type: Number,
         default: 1,
       },
@@ -42,22 +42,22 @@ const orderSchema = new mongoose.Schema({
     enum: ["pending", "completed", "successed", "cancelled"],
     default: "pending",
   },
-  // shippingMethod: {
-  //   type: String,
-  //   enum: ["shipper", "store"],
-  //   default: "store",
-  // },
-  // shippingAddress: {
-  //   type: String,
-  //   required: true,
-  // },
+  shippingMethod: {
+    type: String,
+    enum: ["Delivery", "Pick up"],
+    default: "Pick up",
+  },
+  shippingAddress: {
+    type: String,
+    required: true,
+  },
   note: {
     type: String,
   },
-  delivery: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "Delivery",
-  },
+  // delivery: {
+  //   type: mongoose.Schema.Types.ObjectId,
+  //   ref: "Delivery",
+  // },
   createdAt: {
     type: Date,
     default: Date.now,

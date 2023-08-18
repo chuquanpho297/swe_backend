@@ -12,7 +12,7 @@ exports.getAllOrders = async (req, res) => {
 exports.createOrder = async (req, res) => {
   try {
     const order = await orderService.createOrder(req.body);
-    res.json({ _id: order._id, status: "success" });
+    res.json({ _id: order._id, status: 200 });
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
